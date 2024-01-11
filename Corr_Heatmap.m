@@ -1,0 +1,10 @@
+figure()
+SHM1=SHeatmap(RS,'Format','sq');
+SHM1=SHM1.draw();
+colormap(jet)
+SHM1.setText();
+ax=gca;
+ax.XTickLabel={'rA','rTPJ','rM','rDLPFC','rSFC','rFPC','lFPC','lSFC','lDLPFC','lM','lTPJ','lA'};
+ax.YTickLabel={'rA','rTPJ','rM','rDLPFC','rSFC','rFPC','lFPC','lSFC','lDLPFC','lM','lTPJ','lA'};
+ax.FontSize=14;
+clim([0.3,0.7])
