@@ -1,5 +1,7 @@
+SCZ = xlsread('C:\Users\ASUS\Desktop\SCZ_tACS\ROI\GrangerCausality\table.xlsx', 'Sheet1');
+
 figure()
-SHM1=SHeatmap(RS,'Format','sq');
+SHM1=SHeatmap(SCZ,'Format','sq');
 SHM1=SHM1.draw();
 colormap(jet)
 SHM1.setText();
