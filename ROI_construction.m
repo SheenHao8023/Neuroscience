@@ -1,20 +1,25 @@
-load('S*****.mat')
-nirsdata.oxyData = fillmissing(nirsdata.oxyData, 'constant', nanmean(nirsdata.oxyData(:))) ;
-nirsdata.oxyData = zscore(nirsdata.oxyData, 1);
-A = (nirsdata.oxyData(:,1) + nirsdata.oxyData(:,2) + nirsdata.oxyData(:,4) + nirsdata.oxyData(:,8))/4;
-B = (nirsdata.oxyData(:,3) + nirsdata.oxyData(:,6) + nirsdata.oxyData(:,7))/3;
-C = (nirsdata.oxyData(:,11) + nirsdata.oxyData(:,13) + nirsdata.oxyData(:,14) + nirsdata.oxyData(:,15))/4;
-D = (nirsdata.oxyData(:,12) + nirsdata.oxyData(:,16))/2;
-E = (nirsdata.oxyData(:,19) + nirsdata.oxyData(:,20))/2;
-F = (nirsdata.oxyData(:,17) + nirsdata.oxyData(:,21) + nirsdata.oxyData(:,22) + nirsdata.oxyData(:,23))/4;
-G = (nirsdata.oxyData(:,26) + nirsdata.oxyData(:,30) + nirsdata.oxyData(:,31) + nirsdata.oxyData(:,35))/4;
-H = (nirsdata.oxyData(:,27) + nirsdata.oxyData(:,28) )/2;
-I = (nirsdata.oxyData(:,36) + nirsdata.oxyData(:,45))/2;
-J = (nirsdata.oxyData(:,32) + nirsdata.oxyData(:,33) + nirsdata.oxyData(:,34) + nirsdata.oxyData(:,40))/4;
-K = (nirsdata.oxyData(:,37) + nirsdata.oxyData(:,38) + nirsdata.oxyData(:,46))/3;
-L = (nirsdata.oxyData(:,42) + nirsdata.oxyData(:,44) + nirsdata.oxyData(:,47) + nirsdata.oxyData(:,48))/4;
-newdata = [A,B,C,D,E,F,G,H,I,J,K,L];
-nirsdata.oxyData=newdata;
-nirsdata.nch=12;
-nirsdata.exception_channel=[zeros(1,12)];
-save('S*****.mat', 'nirsdata')
+folderPath = 'C:\Users\ASUS\Desktop\SCZ_tACS\data\A\segmentation\EO_HC'; 
+filePattern = fullfile(folderPath, 'S*.mat');
+fileList = dir(filePattern);
+for i = 1:length(fileList)
+    filePath = fullfile(folderPath, fileList(i).name);
+    load(filePath); 
+    zscored_oxyData = zscore(nirsdata.oxyData);
+        newdata = zeros(size(zscored_oxyData, 1), 12); % 初始化为0，共有12列
+        newdata(:, 1) = mean(zscored_oxyData(:, [1 2 4 8]), 2); % 第一列
+        newdata(:, 2) = mean(zscored_oxyData(:, [3 6 7]), 2);   % 第二列
+        newdata(:, 3) = mean(zscored_oxyData(:, [11 13 14 15]), 2); % 第三列
+        newdata(:, 4) = mean(zscored_oxyData(:, [12 16]), 2);     % 第四列
+        newdata(:, 5) = mean(zscored_oxyData(:, [19 20]), 2);     % 第五列
+        newdata(:, 6) = mean(zscored_oxyData(:, [17 21 22 23]), 2); % 第六列
+        newdata(:, 7) = mean(zscored_oxyData(:, [26 30 31 35]), 2); % 第七列
+        newdata(:, 8) = mean(zscored_oxyData(:, [27 28]), 2);       % 第八列
+        newdata(:, 9) = mean(zscored_oxyData(:, [36 45]), 2);       % 第九列
+        newdata(:, 10) = mean(zscored_oxyData(:, [32 33 34 40]), 2); % 第十列
+        newdata(:, 11) = mean(zscored_oxyData(:, [37 38 46]), 2);    % 第十一列
+        newdata(:, 12) = mean(zscored_oxyData(:, [42 44 47 48]), 2); % 第十二列
+    nirsdata.oxyData = newdata;
+    nirsdata.nch=12;
+    nirsdata.exception_channel=[zeros(1,12)];
+    save(filePath, 'nirsdata');
+end
