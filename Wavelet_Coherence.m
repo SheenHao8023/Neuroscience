@@ -16,10 +16,13 @@ for i = 1:length(fileList1)
                 min_length = min(length(data1_col), length(data2_col));
                 data1_col = data1_col(1:min_length);
                 data2_col = data2_col(1:min_length);
-                [wcoh,wcs,f] = wcoherence(data1_col, data2_col);  %intra-brain等长，inter-brain不等长
-                coherence_value = wcoh (find(0.01<=f(:,1) & f(:,1)<=0.04) , :);
-                coherence_matrix(m,n) = mean(coherence_value(:));
+                if isempty(data1_col) || isempty(data2_col) || ~all(isfinite(data1_col)) || ~all(isfinite(data2_col))
+                    coherence_matrix(m, n) = NaN;
+                else
+                    [wcoh,wcs,f] = wcoherence(data1_col, data2_col);
+                    coherence_value = wcoh (find(0.01<=f(:,1) & f(:,1)<=0.04) , :);
+                    coherence_matrix(m,n) = mean(coherence_value(:));
+                end
             end
         end
     save(fullfile('C:\Users\ASUS\Desktop\SCZ_tACS\data\IBS\EO_HC', [name, '.mat']), 'coherence_matrix');
-end
