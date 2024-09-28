@@ -26,3 +26,4 @@ for i = 1:length(fileList1)
             end
         end
     save(fullfile('C:\Users\ASUS\Desktop\SCZ_tACS\data\IBS\EO_HC', [name, '.mat']), 'coherence_matrix');
+end
