@@ -1,21 +1,21 @@
-folderPath = 'C:\Users\ASUS\Desktop\SCZ_tACS\ROI\FC_SZ\cutting\HB_SCZ\'; 
-files = dir(fullfile(folderPath, '*.mat')); % Ê¹ÓÃdirº¯Êı»ñÈ¡ÎÄ¼ş¼ĞÖĞËùÓĞ.matÎÄ¼ş
+folderPath = 'C:\Users\ASUS\Desktop\SCZ_tES\data\ROI\FC_SZ\cutting\HB_SCZ\'; 
+files = dir(fullfile(folderPath, '*.mat')); % ä½¿ç”¨dirå‡½æ•°è·å–æ–‡ä»¶å¤¹ä¸­æ‰€æœ‰.matæ–‡ä»¶
 GrangerCausality = [];
 for k = 1:length(files)
     filePath = fullfile(files(k).folder, files(k).name);
     fprintf('Loading file: %s\n', filePath);
     load(filePath);
     X = nirsdata.oxyData';
-    nvar = size(X, 1); %»ñµÃÊı¾İ¾ØÕóXµÄ´óĞ¡£¬¼´SDÍ¨µÀÊı
+    nvar = size(X, 1); %è·å¾—æ•°æ®çŸ©é˜µXçš„å¤§å°ï¼Œå³SDé€šé“æ•°
     X = cca_detrend(X);
-    X = cca_rm_temporalmean(X,1); %%È¥Ç÷ÊÆºÍ¹éÒ»»¯
-    [bic,aic] = cca_find_model_order(X,2,30); %%Ñ°ÕÒ×îÓÅµÄÄ£ĞÍ½×Êı
-    ret = cca_granger_regress(X,bic,1);  %¼ÆËãÊ±Óò¸ñÀ¼½ÜÒò¹û£¬²ÉÓÃBIC±ê×¼¹À¼ÆµÄ×îÓÅÄ£ĞÍ½×Êı,²ÎÊı1±íÊ¾½øĞĞF¼ìÑé  
+    X = cca_rm_temporalmean(X,1); %%å»è¶‹åŠ¿å’Œå½’ä¸€åŒ–
+    [bic,aic] = cca_find_model_order(X,2,30); %%å¯»æ‰¾æœ€ä¼˜çš„æ¨¡å‹é˜¶æ•°
+    ret = cca_granger_regress(X,bic,1);  %è®¡ç®—æ—¶åŸŸæ ¼å…°æ°å› æœï¼Œé‡‡ç”¨BICæ ‡å‡†ä¼°è®¡çš„æœ€ä¼˜æ¨¡å‹é˜¶æ•°,å‚æ•°1è¡¨ç¤ºè¿›è¡ŒFæ£€éªŒ  
     PVAL=0.05;
     [PR,q] = cca_findsignificance(ret,PVAL,1);
     GC = ret.gc;
-    GC2 = GC.*PR;  %GC2ÊÇF¼ìÑéµÄ¸ñÀ¼½ÜÒò¹ûÁ¬½ÓÖµ
-    GCvalue = reshape(GC2, 1, 144); % Ê¹ÓÃreshapeº¯Êı½«¾ØÕó×ª»»Îª1ĞĞ144ÁĞµÄÏòÁ¿£¬°´ÁĞÅÅĞò£¨¼´ÏòÁ¿ÏÈÅÅÁĞÔ­¾ØÕóµÚÒ»ÁĞµÄÄÚÈİ£©
+    GC2 = GC.*PR;  %GC2æ˜¯Fæ£€éªŒçš„æ ¼å…°æ°å› æœè¿æ¥å€¼
+    GCvalue = reshape(GC2, 1, 144); % ä½¿ç”¨reshapeå‡½æ•°å°†çŸ©é˜µè½¬æ¢ä¸º1è¡Œ144åˆ—çš„å‘é‡ï¼ŒæŒ‰åˆ—æ’åºï¼ˆå³å‘é‡å…ˆæ’åˆ—åŸçŸ©é˜µç¬¬ä¸€åˆ—çš„å†…å®¹ï¼‰
     GrangerCausality(k,:) = GCvalue;
     %figure(6?)
     % for i=1:12
